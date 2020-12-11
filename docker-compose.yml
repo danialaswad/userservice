@@ -13,21 +13,15 @@ services:
         restart: always
     user-service:
         build: .
-        image: danialaswad/user-service
+        image: userappwebapi.azurecr.io/user-service
         container_name: user-service
         environment:
             - DBSERVER=ms-sql-server
             - DBPassword=Pa55w0rd2020
             - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=https://+:443;http://+:80
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=Pa55w0rd2020
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/userservice.pfx
         ports:
-            - "8080:80"
-            - "8081:443"
+            - "80:80"
         restart: always
-        volumes:
-            - ~/.aspnet/https:/https:ro
         depends_on:
             - ms-sql-server
 
