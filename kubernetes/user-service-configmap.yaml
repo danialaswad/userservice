@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-    name: user-service-configmap
-data:
-    mssql-server: mssql-service
-    environment: Development
-    aspnetcore_url: https://+:443;http://+:80
-    aspnet_kernel_path: /https/userservice.pfx

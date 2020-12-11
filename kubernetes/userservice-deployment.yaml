@@ -16,41 +16,25 @@ spec:
     spec:
       containers:
       - name: webapi
-        image: danialaswad/user-service:1.0.0
+        image: danialaswad/user-service:1.0.1
         ports:
-        - containerPort: 8081
+        - containerPort: 80
         env:
         - name: ASPNETCORE_ENVIRONMENT
           valueFrom:
             configMapKeyRef:
               name: user-service-configmap
               key: environment
-        - name: ASPNETCORE_URLS
-          valueFrom:
-            configMapKeyRef:
-              name: user-service-configmap
-              key: aspnetcore_url
-        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-          valueFrom:
-            secretKeyRef:
-              name: user-service-secret
-              key: user-service-xcert-password
-        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-          valueFrom:
-            configMapKeyRef:
-              name: user-service-configmap
-              key: aspnet_kernel_path
         - name: DBSERVER
           valueFrom:
             configMapKeyRef:
               name: user-service-configmap
-              key: mssql-server
+              key: db-server-address
         - name: DBPassword
           valueFrom:
             secretKeyRef:
               name: mssql-secret
               key: mssql-sa-password
-
 ---
 apiVersion: v1
 kind: Service
@@ -63,5 +47,5 @@ spec:
   ports:
     - protocol: TCP
       port: 8081
-      target: 8081
-      nodeport: 30000
+      targetPort: 80
+      nodePort: 30000

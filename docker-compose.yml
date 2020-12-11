@@ -13,7 +13,7 @@ services:
         restart: always
     user-service:
         build: .
-        image: userappwebapi.azurecr.io/user-service
+        image: danialaswad/user-service
         container_name: user-service
         environment:
             - DBSERVER=ms-sql-server
