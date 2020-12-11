@@ -43,9 +43,7 @@ metadata:
 spec: 
   selector:
     app: webapi
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 80
-      nodePort: 30000
