@@ -10,10 +10,12 @@ namespace UserService.Data
     public class SqlUserRepository : IUserRepository
     {
         private readonly UserContext _context;
+        private readonly UserInputValidator _validator;
 
         public SqlUserRepository(UserContext context)
         {
             _context = context;
+            _validator = new UserInputValidator();
         }
 
         // Save data to replicate in data base
@@ -28,6 +30,21 @@ namespace UserService.Data
             if(user == null)
             {
                 throw new ArgumentNullException(nameof(user));
+            }
+
+            if(! _validator.IsValidEmail(user.Email))
+            {
+                throw new ArgumentException($"Invalid email format: {user.Email}");
+            }
+
+            if(user.Phone != null && ! _validator.IsValidPhone(user.Phone))
+            {
+                throw new ArgumentException($"Phone number invalid (length should be between 8-10): {user.Phone}");
+            }
+
+            if(! _validator.isValidAge(user.Age))
+            {
+                throw new ArgumentException($"Invalid age: {user.Age}");
             }
 
             _context.Users.Add(user);

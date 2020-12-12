@@ -50,7 +50,13 @@ namespace UserService.Controllers
         public ActionResult <UserReadDto> CreateUser(UserCreateDto userCreateDto)
         {   
             var userModel = _mapper.Map<User>(userCreateDto);
-            _repository.CreateUser(userModel);
+
+            try{
+                _repository.CreateUser(userModel);
+            }catch(ArgumentException e){
+                return BadRequest(e.Message);
+            }
+
             _repository.SaveChanges();
 
             var userReadDto = _mapper.Map<UserReadDto>(userModel);

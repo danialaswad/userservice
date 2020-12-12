@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: webapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  template:
+    metadata:
+      labels: 
+        app: webapi
+    spec:
+      containers:
+      - name: webapi
+        image: danialaswad/user-service:1.0.3
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: user-service-configmap
+              key: environment
+        - name: DBSERVER
+          valueFrom:
+            configMapKeyRef:
+              name: user-service-configmap
+              key: db-server-address
+        - name: DBPassword
+          valueFrom:
+            secretKeyRef:
+              name: mssql-secret
+              key: mssql-sa-password
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: user-service
+spec: 
+  selector:
+    app: webapi
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
