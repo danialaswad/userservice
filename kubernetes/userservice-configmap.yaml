@@ -5,4 +5,4 @@ metadata:
     namespace: userservice
 data:
     db-server-address: mssql-service
-    environment: Development
+    environment: Production
